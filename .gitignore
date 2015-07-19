@@ -7,3 +7,9 @@ antenna-coordinate-generation-v1.py
 *.plist
 
 script_comparative_draw.m
+
+*.tiff
+
+*.pdf
+
+readme.txt
