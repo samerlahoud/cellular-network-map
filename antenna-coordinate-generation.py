@@ -4,6 +4,7 @@
 
 import math
 import matplotlib.pyplot as plt
+from scipy.spatial import Voronoi, voronoi_plot_2d
 import sys
 
 # Declaring constants for coordinate computations
@@ -77,6 +78,7 @@ with open('./data/cartoradio-%s/Supports_Cartoradio.csv' %city_code,'r') as coor
 # Convert longitude and latitude into plain coordinates
 p_long = [(long[t] - min(long))*60*NMI*math.cos(D2R*lat[t]) for t in range(len(long))]
 p_lat = [(t - min(lat))*60*NMI for t in lat]
+antenna_locations = [[i,j] for (i,j) in zip(p_long,p_lat)]
 
 output_file = open('./output/%s_%s_%s_antenna_coordinates.m' %(city_code, operator_name, network_type), 'w')
 for c in range(len(p_long)):
@@ -87,10 +89,18 @@ for c in range(len(p_long)):
 ax = plt.gca()
 fig = plt.gcf()
 ax.cla() # clear things for fresh plot
-plt.title('%s %s antenna map for the city of %s - France\n %d antennas' %(operator_name, network_type, city_code, len(long)))
+plt.title('%s %s antenna map - %s - France\n %d antennas' %(operator_name, network_type, city_code, len(long)))
 ax.plot(p_long,p_lat,'x')
 ax.grid()
-for c in range(len(p_long)):
-	fig.gca().add_artist(plt.Circle((p_long[c],p_lat[c]), 900, facecolor='none', edgecolor='b', alpha = 0.5, ls = 'dotted'))
+#for c in range(len(p_long)):
+#	fig.gca().add_artist(plt.Circle((p_long[c],p_lat[c]), 900, facecolor='none', edgecolor='b', alpha = 0.5, ls = 'dotted'))
 fig.savefig('./output/%s-%s-%s-antenna-map.png' %(city_code, operator_name, network_type))
-plt.show()				
+#plt.show()				
+
+ax = plt.gca()
+fig = plt.gcf()
+vor = Voronoi(antenna_locations)
+voronoi_plot_2d(vor)
+ax.cla() # clear things for fresh plot
+plt.title('%s %s Voronoi map - %s - France\n %d antennas' %(operator_name, network_type, city_code, len(long)))
+plt.savefig('./output/%s-%s-%s-voronoi-map.png' %(city_code, operator_name, network_type))
