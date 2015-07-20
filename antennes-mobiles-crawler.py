@@ -1,3 +1,8 @@
+#!/usr/bin/python
+###########################################
+#Samer Lahoud 2015 (samer AT LAHOUD DOT FR)
+###########################################
+
 from selenium import webdriver
 import sys
 

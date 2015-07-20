@@ -1,5 +1,7 @@
 #!/usr/bin/python
-
+###########################################
+#Samer Lahoud 2015 (samer AT LAHOUD DOT FR)
+###########################################
 #http://www.antennesmobiles.fr/index.php?sfr=0&free=0&bouygues=0&cp=rennes&2g=0&3g=0&show
 
 import math
@@ -60,9 +62,6 @@ with open('./data/cartoradio-%s/Antennes_Emetteurs_Bandes_Cartoradio.csv' %city_
 				# Remove converted antenna id from temporary list
 				tmp_id_list.remove(w[1])
 
-#print antenna_carteradio_id
-#print antenna_support_nb
-
 # Get coordinates for each antenna given its support number
 # Modify filename if necessary
 long=[]
@@ -86,21 +85,17 @@ for c in range(len(p_long)):
 	output_file.write('antenna_lat({}) = {}\n'.format(c+1, p_lat[c]))
 
 # Output some eye candies
-ax = plt.gca()
 fig = plt.gcf()
-ax.cla() # clear things for fresh plot
 plt.title('%s %s antenna map - %s - France\n %d antennas' %(operator_name, network_type, city_code, len(long)))
-ax.plot(p_long,p_lat,'x')
-ax.grid()
-#for c in range(len(p_long)):
-#	fig.gca().add_artist(plt.Circle((p_long[c],p_lat[c]), 900, facecolor='none', edgecolor='b', alpha = 0.5, ls = 'dotted'))
-fig.savefig('./output/%s-%s-%s-antenna-map.png' %(city_code, operator_name, network_type))
-#plt.show()				
+plt.plot(p_long,p_lat,'x')
+plt.xlabel('Distance (m)')
+plt.ylabel('Distance (m)')
+fig.savefig('./output/%s-%s-%s-antenna-map.png' %(city_code, operator_name, network_type))			
 
-ax = plt.gca()
 fig = plt.gcf()
 vor = Voronoi(antenna_locations)
 voronoi_plot_2d(vor)
-ax.cla() # clear things for fresh plot
+plt.xlabel('Distance (m)')
+plt.ylabel('Distance (m)')
 plt.title('%s %s Voronoi map - %s - France\n %d antennas' %(operator_name, network_type, city_code, len(long)))
 plt.savefig('./output/%s-%s-%s-voronoi-map.png' %(city_code, operator_name, network_type))
