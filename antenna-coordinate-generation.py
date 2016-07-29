@@ -85,14 +85,12 @@ for c in range(len(p_long)):
 	output_file.write('antenna_lat({}) = {}\n'.format(c+1, p_lat[c]))
 
 # Output some eye candies
-fig = plt.gcf()
 plt.title('%s %s antenna map - %s - France\n %d antennas' %(operator_name, network_type, city_code, len(long)))
-plt.plot(p_long,p_lat,'x')
+plt.plot(p_long,p_lat,'^')
 plt.xlabel('Distance (m)')
 plt.ylabel('Distance (m)')
-fig.savefig('./output/%s-%s-%s-antenna-map.png' %(city_code, operator_name, network_type))			
+plt.savefig('./output/%s-%s-%s-antenna-map.png' %(city_code, operator_name, network_type))			
 
-fig = plt.gcf()
 vor = Voronoi(antenna_locations)
 voronoi_plot_2d(vor)
 plt.xlabel('Distance (m)')
