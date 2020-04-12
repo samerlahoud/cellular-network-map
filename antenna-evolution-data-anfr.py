@@ -1,5 +1,7 @@
 # Get the json file from data.anfr.fr
 # Two filter in use: postal code and activation
+# This does not provide all resutls for a city with multiple postal codes
+
 import sys
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,7 +12,7 @@ plt.rcParams['axes.labelsize'] = 14
 #plt.rcParams.update({'font.size': 12})
 
 # Read .csv and parse date column
-antennas = pd.read_csv('./data/cartoradio-35000/7a2457be-a5f1-4075-8481-4515fc90acc0.csv', sep=';', \
+antennas = pd.read_csv('./data/aggregate-rennes/data-anfr-35000-active.csv', sep=';', \
     index_col=['emr_dt_service'], parse_dates=['emr_dt_service'])
 
 # Add year and month column
@@ -34,7 +36,7 @@ ax.set_xlabel("Date of deployment")
 ax.set_ylabel("Cumulated number of antennas")
 plt.tight_layout()
 ax.get_legend().set_title('Frequency band')
-fig.savefig('./output/cum_antenna_evo.pdf', format='pdf', bbox_inches='tight')
+fig.savefig('./output/cum_antenna_evo_incomplete.pdf', format='pdf', bbox_inches='tight')
 
 fig, ax = plt.subplots()
 perc_antennas.plot(kind='bar',stacked=True, ax=ax)
@@ -47,4 +49,4 @@ ax.set_ylabel("Percentage of antennas")
 plt.xticks(rotation=90)
 plt.tight_layout()
 ax.get_legend().set_title('Frequency band')
-fig.savefig('./output/perc_antenna_evo.pdf', format='pdf', bbox_inches='tight')
+fig.savefig('./output/perc_antenna_evo_incomplete.pdf', format='pdf', bbox_inches='tight')

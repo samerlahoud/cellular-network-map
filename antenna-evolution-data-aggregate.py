@@ -1,5 +1,5 @@
-# Get the json file from data.anfr.fr
-# Two filter in use: postal code and activation
+# Data is obtained by anfr and cartoradio
+# Adapted for cities with mutiple postal codes
 import sys
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -9,13 +9,13 @@ plt.rcParams['font.serif'] = 'CMU Serif'
 plt.rcParams['axes.labelsize'] = 14
 #plt.rcParams.update({'font.size': 12})
 
-base_folder = './data/cartoradio-35000/'
+base_folder = './data/aggregate-rennes/'
 
 # Remove french accents and spaces from column names
-support_df = pd.read_csv(base_folder+'EXPORT_CARTORADIO_12-04-2020_16h35m10/Supports_Cartoradio.csv', sep=';')
+support_df = pd.read_csv(base_folder+'cartoradio-rennes/Supports_Cartoradio.csv', sep=';')
 support_id = support_df.Numero_du_support
 
-antennas = pd.read_csv(base_folder+'7a2457be-a5f1-4075-8481-4515fc90acc0.csv', sep=';', \
+antennas = pd.read_csv(base_folder+'data-anfr-rennes-lsquare-active.csv', sep=';', \
     index_col=['emr_dt_service'], parse_dates=['emr_dt_service'])
 
 antennas = antennas[antennas.sup_id.isin(support_id.values)]
