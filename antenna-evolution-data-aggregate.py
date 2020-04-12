@@ -18,6 +18,7 @@ support_id = support_df.Numero_du_support
 antennas = pd.read_csv(base_folder+'data-anfr-rennes-lsquare-active.csv', sep=';', \
     index_col=['emr_dt_service'], parse_dates=['emr_dt_service'])
 
+# Keep only the city antennas
 antennas = antennas[antennas.sup_id.isin(support_id.values)]
 
 # Add year and month column
