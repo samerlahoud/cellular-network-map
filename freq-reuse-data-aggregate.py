@@ -22,6 +22,11 @@ antennas = pd.read_csv(base_folder+'data-anfr-rennes-lsquare-active.csv', sep=';
 # Keep only the city antennas
 antennas = antennas[antennas.sup_id.isin(support_id.values)]
 
+# Get frequency bands
+# Remove french accents and spaces from column names
+freq_bands = pd.read_csv(base_folder+'cartoradio-rennes/Antennes_Emetteurs_Bandes_Cartoradio.csv', sep=';')
+freq_bands = freq_bands[freq_bands.Numero_de_support.isin(antennas.sup_id.values)]
+
 # Add year and month column
 antennas['month'] = antennas.index.strftime('%Y-%m')
 antennas['year'] = antennas.index.strftime('%Y')
