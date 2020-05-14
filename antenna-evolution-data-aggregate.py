@@ -33,6 +33,7 @@ antennas['freq_band'] = antennas.emr_lb_systeme.str.split(expand=True)[1]
 cumul_antennas = antennas.groupby(['month','emr_lb_systeme']).size().unstack().fillna(0).cumsum()
 cumul_band = antennas.groupby(['month','freq_band']).size().unstack().fillna(0).cumsum()
 perc_antennas = cumul_antennas.div(cumul_antennas.sum(axis=1), axis=0)
+sorted_perc_antennas = perc_antennas[['GSM 1800', 'LTE 1800', 'UMTS 2100', 'LTE 2100', 'LTE 2600', 'LTE 700', 'LTE 800', 'GSM 900', 'UMTS 900']]
 perc_band = cumul_band.div(cumul_band.sum(axis=1), axis=0)
 
 n=10
@@ -50,7 +51,8 @@ ax.get_legend().set_title('Mobile Technology')
 fig.savefig('./output/cum_antenna_evo.pdf', format='pdf', bbox_inches='tight')
 
 fig, ax = plt.subplots()
-perc_antennas.plot(kind='bar',stacked=True, ax=ax)
+color_list = ['red', 'darkred', 'blue', 'darkblue', 'violet', 'orange', 'grey', 'green', 'darkgreen']
+sorted_perc_antennas.plot(kind='bar',stacked=True, ax=ax, color=color_list)
 ticks = ax.xaxis.get_ticklocs()
 ticklabels = [l.get_text() for l in ax.xaxis.get_ticklabels()]
 ax.xaxis.set_ticks(ticks[::n])
@@ -64,7 +66,8 @@ ax.get_legend().set_title('Mobile Technology')
 fig.savefig('./output/perc_antenna_evo.pdf', format='pdf', bbox_inches='tight')
 
 fig, ax = plt.subplots()
-perc_band.plot(kind='bar',stacked=True, ax=ax)
+color_list = ['red', 'blue', 'violet', 'orange', 'grey', 'green']
+perc_band.plot(kind='bar',stacked=True, ax=ax, color=color_list)
 ticks = ax.xaxis.get_ticklocs()
 ticklabels = [l.get_text() for l in ax.xaxis.get_ticklabels()]
 ax.xaxis.set_ticks(ticks[::n])
