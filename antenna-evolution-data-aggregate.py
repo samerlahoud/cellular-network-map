@@ -59,7 +59,8 @@ ax.xaxis.set_ticklabels(ticklabels[::n])
 ax.set_xlabel("Date of deployment")
 ax.set_ylabel("Percentage of antennas")
 ax.xaxis.set_tick_params(rotation=90)
-ax.legend(bbox_to_anchor=(1.3, 1.0), loc='upper right', title='Mobile Technology')
+#ax.legend(bbox_to_anchor=(1.3, 1.0), loc='upper right', title='Mobile Technology')
+ax.legend(loc='upper left')
 fig.savefig('./output/perc_antenna_evo.pdf', format='pdf', bbox_inches='tight')
 
 fig, ax = plt.subplots()
@@ -77,6 +78,5 @@ labels = [l+' MHz' for l in labels]
 #labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: int(t[0])))
 #ax.legend(handles, labels, bbox_to_anchor=(1.3, 1.0), loc='upper right', \
 #    mode='expand', title='Frequency Band')
-ax.legend(handles, labels, bbox_to_anchor=(1.3, 1.0), loc='upper right', \
-    title='Frequency Band')
+ax.legend(handles, labels, loc='upper left')
 fig.savefig('./output/perc_band_evo.pdf', format='pdf', bbox_inches='tight')
