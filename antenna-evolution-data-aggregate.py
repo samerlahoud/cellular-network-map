@@ -34,11 +34,19 @@ antennas['freq_band'] = antennas.emr_lb_systeme.str.split(expand=True)[1]
 antennas['location'] = antennas.coordonnees.str.split(",")
 
 # Folium map
-geo_map = folium.Map([rennes_latitude, rennes_longitude], zoom_start=13)
+map_latest = folium.Map([rennes_latitude, rennes_longitude], zoom_start=13)
 for loc in antennas['location']:
-    folium.CircleMarker([loc[0],loc[1]],radius=5,fill_color="#3db7e4").add_to(geo_map)
-geo_map.add_child(plugins.HeatMap(antennas['location'], radius=35))
-geo_map.save('./output/antenna_map.html')
+    folium.CircleMarker([loc[0],loc[1]],radius=5,fill_color="#3db7e4").add_to(map_latest)
+map_latest.add_child(plugins.HeatMap(antennas['location'], radius=35))
+map_latest.save('./output/antenna_map_latest.html')
+
+# Select antennas before 2013
+antennas_2013 = antennas[antennas.index < '2013-01-01']
+map_2013 = folium.Map([rennes_latitude, rennes_longitude], zoom_start=13)
+for loc in antennas_2013['location']:
+    folium.CircleMarker([loc[0],loc[1]],radius=5,fill_color="#3db7e4").add_to(map_2013)
+map_2013.add_child(plugins.HeatMap(antennas_2013['location'], radius=35))
+map_2013.save('./output/antenna_map_2013.html')
 
 # Group by month then by emr_lb_systeme (technology)
 # Put in a a matrix (month, emr_lb_systeme) with unstack 
