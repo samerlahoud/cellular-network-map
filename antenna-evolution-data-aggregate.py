@@ -2,6 +2,8 @@
 # Adapted for cities with mutiple postal codes
 import sys
 import pandas as pd
+import folium
+from folium import plugins
 import matplotlib.pyplot as plt
 
 plt.rcParams['font.family'] = 'serif'
@@ -9,6 +11,8 @@ plt.rcParams['font.serif'] = 'CMU Serif'
 plt.rcParams['axes.labelsize'] = 14
 #plt.rcParams.update({'font.size': 12})
 
+rennes_latitude = 48.114700
+rennes_longitude = -1.679400
 base_folder = './data/aggregate-rennes/'
 
 # Remove french accents and spaces from column names
@@ -26,6 +30,15 @@ antennas = antennas[antennas.sup_id.isin(support_id.values)]
 antennas['month'] = antennas.index.strftime('%Y-%m')
 antennas['year'] = antennas.index.strftime('%Y')
 antennas['freq_band'] = antennas.emr_lb_systeme.str.split(expand=True)[1]
+# Split location into longitude and latitude
+antennas['location'] = antennas.coordonnees.str.split(",")
+
+# Folium map
+geo_map = folium.Map([rennes_latitude, rennes_longitude], zoom_start=13)
+for loc in antennas['location']:
+    folium.CircleMarker([loc[0],loc[1]],radius=5,fill_color="#3db7e4").add_to(geo_map)
+geo_map.add_child(plugins.HeatMap(antennas['location'], radius=35))
+geo_map.save('./output/antenna_map.html')
 
 # Group by month then by emr_lb_systeme (technology)
 # Put in a a matrix (month, emr_lb_systeme) with unstack 
