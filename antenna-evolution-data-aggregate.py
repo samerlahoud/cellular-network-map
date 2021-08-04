@@ -14,22 +14,23 @@ plt.rcParams['axes.labelsize'] = 14
 rennes_latitude = 48.114700
 rennes_longitude = -1.679400
 base_folder = './data/aggregate-rennes/'
+postal_codes = [35000, 35200, 35700]
 
 # Remove french accents and spaces from column names
 # support_df includes all type of antennas not only for mobile communications 
-support_df = pd.read_csv(base_folder+'cartoradio-rennes/Supports_Cartoradio.csv', sep=';')
-support_id = support_df.Numero_du_support
+#support_df = pd.read_csv(base_folder+'cartoradio-rennes/Supports_Cartoradio.csv', sep=';', encoding='latin-1')
+#support_id = support_df.Numero_du_support
 
 antennas = pd.read_csv(base_folder+'data-anfr-rennes-lsquare-active.csv', sep=';', \
-    index_col=['emr_dt_service'], parse_dates=['emr_dt_service'])
+    index_col=['emr_dt'], parse_dates=['emr_dt'])
 
-# Keep only the city antennas
-antennas = antennas[antennas.sup_id.isin(support_id.values)]
+# Keep only the city antennas identifed by postal codes
+antennas = antennas[antennas.adr_nm_cp.isin(postal_codes)]
 
 # Add year and month column
 antennas['month'] = antennas.index.strftime('%Y-%m')
 antennas['year'] = antennas.index.strftime('%Y')
-antennas['freq_band'] = antennas.emr_lb_systeme.str.split(expand=True)[1]
+antennas['freq_band'] = antennas.emr_lb_systeme.str.rsplit(n=1,expand=True)[1]
 # Split location into longitude and latitude
 antennas['location'] = antennas.coordonnees.str.split(",")
 
@@ -54,7 +55,7 @@ map_2013.save('./output/antenna_map_2013.html')
 cumul_antennas = antennas.groupby(['month','emr_lb_systeme']).size().unstack().fillna(0).cumsum()
 cumul_band = antennas.groupby(['month','freq_band']).size().unstack().fillna(0).cumsum()
 perc_antennas = cumul_antennas.div(cumul_antennas.sum(axis=1), axis=0)
-sorted_perc_antennas = perc_antennas[['GSM 1800', 'LTE 1800', 'UMTS 2100', 'LTE 2100', 'LTE 2600', 'LTE 700', 'LTE 800', 'GSM 900', 'UMTS 900']]
+sorted_perc_antennas = perc_antennas[['GSM 1800', 'LTE 1800', 'UMTS 2100', 'LTE 2100', 'LTE 2600', 'LTE 700', 'LTE 800', 'GSM 900', 'UMTS 900', '5G NR 700', '5G NR 2100', '5G NR 3500']]
 perc_band = cumul_band.div(cumul_band.sum(axis=1), axis=0)
 
 n=10
